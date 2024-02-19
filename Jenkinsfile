@@ -1,5 +1,6 @@
 pipeline {
     agent { label 'jdk8_maven' }
+    parameters { string(name: 'Maven_Goal', defaultValue: 'package', description: 'This is the Maven Goal') }
     triggers { pollSCM('* * * * *') }
     tools { jdk 'jdk_8' }
     stages {
@@ -11,7 +12,7 @@ pipeline {
         }
         stage('Build') {
             steps {
-                sh 'mvn package'
+                sh "mvn ${params.Maven_Goal}"
             }
         }
         stage('Post-Build') {
