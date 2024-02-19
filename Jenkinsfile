@@ -25,4 +25,18 @@ pipeline {
             }
         }
     }
+    post {
+        success {
+            mail subject: "The ${JOB_NAME} Job build was Success.",
+                 body: "The ${JOB_NAME} Job build number ${BUILD_NUMBER} was Success, Click here ${BUILD_URL} to know more about Job.",
+                 to: 'sureshkola@techsolutions.com',
+                 from: 'devteam@techsolutions.com'
+        }
+        failure {
+            mail subject: "The ${JOB_NAME} Job build was Failure.",
+                 body: "The ${JOB_NAME} Job build number ${BUILD_NUMBER} was Failure, Click here ${BUILD_URL} to know more about Job.",
+                 to: 'sureshkola@techsolutions.com',
+                 from: 'devteam@techsolutions.com'
+        }
+    }
 }
