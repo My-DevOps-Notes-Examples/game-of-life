@@ -24,6 +24,11 @@ pipeline {
                       allowEmptyResults: false
             }
         }
+        stage('Copy_War_File') {
+            steps {
+                sh "mkdir -p /tmp/${JOB_NAME}/${BUILD_ID} && cp ./gameoflife-web/target/gameoflife.war /tmp/${JOB_NAME}/${BUILD_ID}"
+            }
+        }
     }
     post {
         success {
