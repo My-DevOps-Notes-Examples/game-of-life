@@ -9,7 +9,7 @@ pipeline {
                     branch: 'declarative'
             }
         }
-        stage ('Artifactory configuration') {
+        stage('Artifactory configuration') {
             steps {
                 rtServer (
                     id: "ARTIFACTORY",
@@ -33,7 +33,7 @@ pipeline {
             }
         }
 
-        stage ('Exec Maven') {
+        stage('Exec Maven') {
             steps {
                 rtMavenRun (
                     tool: 'Default_Maven', // Tool name from Jenkins configuration
@@ -54,6 +54,14 @@ pipeline {
                 rtPublishBuildInfo (
                     serverId: "ARTIFACTORY"
                 )
+                stash name: 'gol_war_file',
+                      includes: '**/target/gameoflife.war'
+            }
+        }
+        stage('Unstash') {
+            agent { label 'StoreData' }
+            steps {
+                unstash name: 'gol_war_file'
             }
         }
     }
