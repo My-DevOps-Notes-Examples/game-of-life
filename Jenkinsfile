@@ -1,8 +1,7 @@
 pipeline {
-    agent { label 'jdk8_maven' }
-    parameters { choice(name: 'Maven_Goals', choices: ['package', 'install', 'validate'], description: 'Maven Goals') }
+    agent { label 'Jdk17_Maven' }
     triggers { pollSCM('* * * * *') }
-    tools { jdk 'jdk_8' }
+    tools { jdk 'Jdk8' }
     stages {
         stage('VCS') {
             steps {
@@ -12,7 +11,7 @@ pipeline {
         }
         stage('Build') {
             steps {
-                sh "mvn ${params.Maven_Goals}"
+                sh "mvn package"
             }
         }
         stage('Post-Build') {
@@ -23,25 +22,6 @@ pipeline {
                 junit testResults: '**/surefire-reports/TEST-*.xml',
                       allowEmptyResults: false
             }
-        }
-        stage('Copy_War_File') {
-            steps {
-                sh "mkdir -p /tmp/${JOB_NAME}/${BUILD_ID} && cp ./gameoflife-web/target/gameoflife.war /tmp/${JOB_NAME}/${BUILD_ID}"
-            }
-        }
-    }
-    post {
-        success {
-            mail subject: "The ${JOB_NAME} Job build was Success.",
-                 body: "The ${JOB_NAME} Job build number ${BUILD_NUMBER} was Success, Click here ${BUILD_URL} to know more about Job.",
-                 to: 'sureshkola@techsolutions.com',
-                 from: 'devteam@techsolutions.com'
-        }
-        failure {
-            mail subject: "The ${JOB_NAME} Job build was Failure.",
-                 body: "The ${JOB_NAME} Job build number ${BUILD_NUMBER} was Failure, Click here ${BUILD_URL} to know more about Job.",
-                 to: 'sureshkola@techsolutions.com',
-                 from: 'devteam@techsolutions.com'
         }
     }
 }
