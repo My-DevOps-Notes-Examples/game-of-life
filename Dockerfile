@@ -1,8 +1,8 @@
 # Image
-FROM tomcat:9-jdk8-corretto⁠
+FROM tomcat:9-jdk8-corretto
 
 # Copy War file
-COPY /home/ubuntu/workspace/Game-of-Life/gameoflife-web/target/gameoflife.war /usr/local/tomcat/webapps
+COPY **/target/gameoflife.war /usr/local/tomcat/webapps
 
 # Port
 EXPOSE 8080
